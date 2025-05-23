@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.IO;
 using System.Windows.Markup;
+using System.Windows.Shell;
 
 namespace dinospiel {
 
@@ -24,11 +25,12 @@ namespace dinospiel {
 
         private DispatcherTimer timer = new DispatcherTimer();
         private List<Obstacle> obstacles = new List<Obstacle>();
-        Random rng = new Random();
+        private Random rng = new Random();
+        private int jumping = 0;
 
         public MainWindow() {
             InitializeComponent();
-            timer.Interval = TimeSpan.FromMilliseconds(50);
+            timer.Interval = TimeSpan.FromMilliseconds(20);
             timer.Tick += playing;
         }
 
@@ -58,10 +60,18 @@ namespace dinospiel {
                     continue;
                 obstacle.Pos = new Point(obstacle.Pos.X-3, 0);
                 GameCanvas.Children.Add(obstacle.Img);
+                Canvas.SetLeft(obstacle.Img,obstacle.Pos.X);
+                Canvas.SetTop(obstacle.Img, obstacle.Pos.Y);
             }
 
             if ( HitCheck() )
                 GameOver();
+
+            if(Canvas.GetTop(dino) != 295 || jumping <0 ) {
+                double newTop = jumping < -200 ? Canvas.GetTop(dino) - 25 : 295 + jumping;
+                Canvas.SetTop(dino, newTop);
+                jumping += 25;
+            }
         }
 
         public bool HitCheck() {
@@ -97,6 +107,12 @@ namespace dinospiel {
         private void BTNplay_Click(object sender, RoutedEventArgs e) {
             BTNplay.Visibility = Visibility.Hidden;
             timer.Start();
+        }
+
+        private void jump(object sender, KeyEventArgs e) {
+            if ( jumping >= 0 ) {
+                jumping -= 400;
+            }
         }
     }
 
@@ -137,8 +153,11 @@ public class Obstacle {
         Img = new Image {
             Width = this.Width,
             Height = this.Height,
+            Stretch = Stretch.Fill,
             Source = new BitmapImage(new Uri(Path, UriKind.Relative))
         };
     }
+
 }
+
 
