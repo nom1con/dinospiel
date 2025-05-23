@@ -60,8 +60,12 @@ namespace dinospiel {
                     continue;
                 obstacle.Pos = new Point(obstacle.Pos.X-3, 0);
                 GameCanvas.Children.Add(obstacle.Img);
-                Canvas.SetLeft(obstacle.Img,obstacle.Pos.X);
-                Canvas.SetTop(obstacle.Img, obstacle.Pos.Y);
+
+                *********************************************************************
+
+
+                Canvas.SetLeft(obstacle.Img, obstacle.Pos.X);
+                Canvas.SetTop(obstacle.Img, 295 + obstacle.Pos.Y);
             }
 
             if ( HitCheck() )
@@ -154,7 +158,9 @@ public class Obstacle {
             Width = this.Width,
             Height = this.Height,
             Stretch = Stretch.Fill,
-            Source = new BitmapImage(new Uri(Path, UriKind.Relative))
+            Source = new BitmapImage(new Uri(System.IO.Path.GetFullPath(Path)))
+
+            //Source = new BitmapImage(new Uri(Path, UriKind.Relative))
         };
     }
 
