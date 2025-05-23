@@ -37,8 +37,8 @@ namespace dinospiel {
                 Obstacle obstacle = new Obstacle(rng.Next(2) == 1);
                 obstacles.Add(obstacle);
                 GameCanvas.Children.Add(obstacle.Img);
-                Canvas.SetLeft(obstacle.Img, obstacle.Pos.X + );
-                Canvas.SetTop(obstacle.Img, obstacle.Pos.Y + );
+                Canvas.SetLeft(obstacle.Img, obstacle.Pos.X + 1);
+                Canvas.SetTop(obstacle.Img, obstacle.Pos.Y + 1);
             }
 
             Move();

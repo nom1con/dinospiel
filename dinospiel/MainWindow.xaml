@@ -9,7 +9,7 @@
     <Grid>
         <Canvas x:Name="GameCanvas" Background="White">
             <Rectangle HorizontalAlignment="Left" Height="2" Stroke="Black" VerticalAlignment="Center" Width="833" Fill="Black" Canvas.Top="388" Canvas.Left="-33"/>
-            <Image x:Name="dino" HorizontalAlignment="Center" Height="100" VerticalAlignment="Top" Width="100" Source="/dino.png" Canvas.Left="60" Canvas.Top="305"/>
+            <Image x:Name="dino" HorizontalAlignment="Center" Height="100" VerticalAlignment="Top" Width="100" Source="/img/dino.png" Canvas.Left="60" Canvas.Top="305"/>
             <Button x:Name="BTNplay" Content="Press to Play" HorizontalAlignment="Left" VerticalAlignment="Top" Height="108" Width="324" FontSize="48" Click="BTNplay_Click" Canvas.Left="238" Canvas.Top="70"/>
         </Canvas>
 
