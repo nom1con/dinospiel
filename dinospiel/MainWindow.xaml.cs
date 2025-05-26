@@ -18,6 +18,7 @@ using System.Windows.Threading;
 using System.IO;
 using System.Windows.Markup;
 using System.Windows.Shell;
+using System.Security.Cryptography;
 
 namespace dinospiel {
 
@@ -35,7 +36,7 @@ namespace dinospiel {
         }
 
         private void playing(object sender, EventArgs e) {
-            if ( rng.Next(1, 200) == 1 ) {
+            if (( rng.Next(1, 200) == 1 || obstacles.Count<1 ) && obstacles.Count < 2 ) {
                 Obstacle obstacle = new Obstacle(rng.Next(2) == 1);
                 obstacles.Add(obstacle);
                 GameCanvas.Children.Add(obstacle.Img);
@@ -55,26 +56,39 @@ namespace dinospiel {
                 }
             }
 
+            List<Obstacle> RMV_obstacles = new List<Obstacle>();
+
             foreach ( Obstacle obstacle in obstacles ) {
                 if ( GameCanvas.Children.Contains(obstacle.Img) )
                     continue;
-                obstacle.Pos = new Point(obstacle.Pos.X-3, 0);
+                obstacle.Pos = new Point(obstacle.Pos.X-10, obstacle.Pos.Y);
+
                 GameCanvas.Children.Add(obstacle.Img);
+                
+                if ( obstacle.Pos.X < -800 ) {
+                    RMV_obstacles.Add(obstacle);
+                }
 
-                *********************************************************************
-
-
-                Canvas.SetLeft(obstacle.Img, obstacle.Pos.X);
-                Canvas.SetTop(obstacle.Img, 295 + obstacle.Pos.Y);
+                Canvas.SetLeft(obstacle.Img, 800 + obstacle.Pos.X);
+                Canvas.SetTop(obstacle.Img, 295 - obstacle.Pos.Y);
             }
+
+
+            foreach( Obstacle obstacle in RMV_obstacles ) {
+                obstacles.Remove(obstacle);
+                GameCanvas.Children.Remove(obstacle.Img );
+            }
+
+
+
 
             if ( HitCheck() )
                 GameOver();
 
             if(Canvas.GetTop(dino) != 295 || jumping <0 ) {
-                double newTop = jumping < -200 ? Canvas.GetTop(dino) - 25 : 295 + jumping;
+                double newTop = jumping < -200 ? Canvas.GetTop(dino) - 10 : 295 + jumping;
                 Canvas.SetTop(dino, newTop);
-                jumping += 25;
+                jumping = jumping < 0? jumping + 10 : 0;
             }
         }
 
@@ -87,7 +101,7 @@ namespace dinospiel {
             Rect dinoRect = new Rect(dinoX, dinoY, dinoWidth, dinoHeight);
 
             foreach ( Obstacle obstacle in obstacles ) {
-                Rect obsRect = new Rect(obstacle.Pos.X, obstacle.Pos.Y, obstacle.Width, obstacle.Height);
+                Rect obsRect = new Rect(Canvas.GetLeft(obstacle.Img), Canvas.GetTop(obstacle.Img), obstacle.Width, obstacle.Height);
                 if ( dinoRect.IntersectsWith(obsRect) ) {
                     return true;
                 }
@@ -146,7 +160,7 @@ public class Obstacle {
             this.Path = "img\\ptero.png";
             this.Width = 70;
             this.Height = 70;
-            this.Pos = new Point(20, -100);
+            this.Pos = new Point(20, (new Random().Next(0, 400)));
             break;
         }
 
