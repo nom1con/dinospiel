@@ -27,7 +27,7 @@ namespace dinospiel {
         private DispatcherTimer timer = new DispatcherTimer();
         private List<Obstacle> obstacles = new List<Obstacle>();
         private Random rng = new Random();
-        private int jumping = 0;
+        private int jumping = 0, score = 0;
 
         public MainWindow() {
             InitializeComponent();
@@ -67,6 +67,8 @@ namespace dinospiel {
                 
                 if ( obstacle.Pos.X < -800 ) {
                     RMV_obstacles.Add(obstacle);
+                    score++;
+                    lblScore.Content = score;
                 }
 
                 Canvas.SetLeft(obstacle.Img, 800 + obstacle.Pos.X);
@@ -86,9 +88,15 @@ namespace dinospiel {
                 GameOver();
 
             if(Canvas.GetTop(dino) != 295 || jumping <0 ) {
-                double newTop = jumping < -200 ? Canvas.GetTop(dino) - 10 : 295 + jumping;
+                double newTop;
+                if ( jumping < -250) {
+                    newTop = Canvas.GetTop(dino) - 10;
+                    jumping += 10;
+                } else {
+                    newTop = 295 + jumping;
+                    jumping = jumping < 0 ? jumping + 10 : 0;
+                }
                 Canvas.SetTop(dino, newTop);
-                jumping = jumping < 0? jumping + 10 : 0;
             }
         }
 
@@ -118,18 +126,24 @@ namespace dinospiel {
                 }
             }   
 
+            score = 0;
             obstacles.Clear();
             BTNplay.Visibility = Visibility.Visible;
+            lblTutorial.Visibility = Visibility.Visible;
         }
 
         private void BTNplay_Click(object sender, RoutedEventArgs e) {
             BTNplay.Visibility = Visibility.Hidden;
+            lblTutorial.Visibility = Visibility.Hidden;
+            lblScore.Content = "0";
+            jumping = 0;
+            Canvas.SetTop(dino, 295);
             timer.Start();
         }
 
         private void jump(object sender, KeyEventArgs e) {
             if ( jumping >= 0 ) {
-                jumping -= 400;
+                jumping -= 500;
             }
         }
     }
@@ -160,7 +174,7 @@ public class Obstacle {
             this.Path = "img\\ptero.png";
             this.Width = 70;
             this.Height = 70;
-            this.Pos = new Point(20, (new Random().Next(0, 400)));
+            this.Pos = new Point(20, (new Random().Next(0, 300)));
             break;
         }
 

@@ -12,6 +12,9 @@
             <Image x:Name="dino" HorizontalAlignment="Center" Height="100" VerticalAlignment="Top" Width="100" Source="/dino.png" Canvas.Left="60" Canvas.Top="295
                    "/>
             <Button x:Name="BTNplay" Content="Press to Play" HorizontalAlignment="Left" VerticalAlignment="Top" Height="108" Width="324" FontSize="48" Click="BTNplay_Click" Canvas.Left="238" Canvas.Top="70"/>
+            <Label Content="Score:" Canvas.Left="10" Canvas.Top="10" Height="33" Width="56" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
+            <Label x:Name="lblScore" Content="0" Canvas.Left="83" Canvas.Top="10" Height="33" Width="56" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="16" HorizontalContentAlignment="Right" />
+            <Label x:Name="lblTutorial" Content="SPACE to jump" Canvas.Left="83" Canvas.Top="247"/>
         </Canvas>
 
     </Grid>
